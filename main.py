@@ -23,16 +23,19 @@ def process_output(json_output, region, dist_id):
     else:
         playsound.playsound("alarm.mp3")
 
-districtCodes = {
-    "Bangalore": [294, 265],
-    "Mumbai (MMR)": [395, 392, 393, 394],
-    "Pune": [363],
-    "Delhi (NCR)": [141, 145, 140, 146, 147, 143, 148, 149, 144, 150, 142, 199, 188, 207, 202, 650, 651],
-    "Hyderabad": [581],
-    "Chennai": [571, 565, 557]
-}
+districtCodes = [
+    [294, 265],
+    [395, 392, 393, 394],
+    [363],
+    [141, 145, 140, 146, 147, 143, 148, 149, 144, 150, 142, 199, 188, 207, 202, 650, 651],
+    [581],
+    [571, 565, 557]
+]
 region_arr = ["Bangalore", "Mumbai (MMR)", "Pune", "Delhi (NCR)", "Hyderabad", "Chennai"]
-reg_id = input("Enter city.\n1: Bangalore\n2: Mumbai MMR\n3: Pune\n4: Delhi NCR\n5: Hyderabad\n6: Chennai\n")
+disp_str = "Enter city."
+for i in range(0, len(region_arr)):
+    disp_str += "\n"+str(i+1)+": "+region_arr[i]
+reg_id = input(disp_str+"\n")
 try:
     reg_id = int(reg_id)
     if reg_id < 1 or reg_id > 6:
@@ -42,7 +45,7 @@ except:
     exit()
 region = region_arr[reg_id - 1]
 print("Your region is "+region)
-dist_ids = districtCodes[region]
+dist_ids = districtCodes[reg_id - 1]
 while 1:
     current_date = datetime.datetime.now()
     current_yr = current_date.year
