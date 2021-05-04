@@ -31,7 +31,7 @@ districtCodes = {
     "Hyderabad": [581],
     "Chennai": [571, 565, 557]
 }
-region_arr = ["Bangalore", "Mumbai MMR", "Pune", "Delhi NCR", "Hyderabad", "Chennai"]
+region_arr = ["Bangalore", "Mumbai (MMR)", "Pune", "Delhi (NCR)", "Hyderabad", "Chennai"]
 reg_id = input("Enter city.\n1: Bangalore\n2: Mumbai MMR\n3: Pune\n4: Delhi NCR\n5: Hyderabad\n6: Chennai\n")
 try:
     reg_id = int(reg_id)
