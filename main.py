@@ -15,7 +15,7 @@ def process_output(json_output, region, dist_id):
             min_age = session["min_age_limit"]
             avbl_cap = session["available_capacity"]
             if min_age == 18 and avbl_cap > 0:
-                print("SLOTS AVAILABLE AT "+centre["name"]+", "+str(centre["pincode"])+", district "+centre["district_name"])
+                print("SLOTS AVAILABLE AT "+centre["name"]+", "+str(centre["pincode"])+", district "+centre["district_name"]+" DATE "+session["date"])
                 no_of_centres+=1
 
     if no_of_centres == 0:
