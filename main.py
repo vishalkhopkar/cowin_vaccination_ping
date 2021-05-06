@@ -1,5 +1,6 @@
 import playsound
 import requests
+import urllib
 import datetime
 import json
 import time
@@ -61,11 +62,25 @@ while 1:
 
     total_date = str_current_day+"-"+str_current_month+"-"+str_current_year
     for dist_id in dist_ids:
+        api_call = "https://cdn-api.co-vin.in/api/v2/appointment/sessions/calendarByDistrict?district_id="+str(dist_id)+"&date="+total_date
+        print(api_call)
+        '''
+        Host: cdn-api.co-vin.in
+        Accept: application/json
+        Content-Type: application/xml
+        Cache-Control: no-cache
+        Postman-Token: a71b35c2-ef94-6213-cfb2-28c879bd9710
+        '''
+        headers_dict = {
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36"
 
-        response = requests.get("https://cdn-api.co-vin.in/api/v2/appointment/sessions/calendarByDistrict?district_id="+str(dist_id)+"&date="+total_date)
+            }
+        response = requests.get(api_call, headers=headers_dict)
+        #response = urllib.request.urlopen(api_call)
+        #print(response)
         if response.status_code == 200:
             process_output(response.json(), region, dist_id)
         else:
-            print("API call failed")
+            print("API call failed status code "+str(response.status_code)+" error: \n"+str(response.content))
 
     time.sleep(60)
