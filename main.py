@@ -75,7 +75,7 @@ while 1:
             "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36"
 
             }
-        response = requests.get(api_call, headers=headers_dict)
+        response = requests.get(api_call, headers=headers_dict, verify=False)
         #response = urllib.request.urlopen(api_call)
         #print(response)
         if response.status_code == 200:
@@ -83,4 +83,4 @@ while 1:
         else:
             print("API call failed status code "+str(response.status_code)+" error: \n"+str(response.content))
 
-    time.sleep(60)
+    time.sleep(30)
