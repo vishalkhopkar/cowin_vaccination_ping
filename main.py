@@ -4,6 +4,12 @@ import urllib
 import datetime
 import json
 import time
+import threading
+
+def playAlarm():
+    threadLock.acquire()
+    playsound.playsound("alarm.mp3")
+    threadLock.release()
 
 def process_output(json_output, region, dist_id):
     #output = json.loads(json_output)
@@ -16,14 +22,14 @@ def process_output(json_output, region, dist_id):
             min_age = session["min_age_limit"]
             avbl_cap = session["available_capacity"]
             if min_age == 18 and avbl_cap > 0:
-                print("SLOTS AVAILABLE AT "+centre["name"]+", "+str(centre["pincode"])+", district "+centre["district_name"]+" DATE "+session["date"])
+                print("SLOTS AVAILABLE AT "+centre["name"]+", "+str(centre["pincode"])+", district "+centre["district_name"]+" DATE "+session["date"]+"\n\n\n")
                 no_of_centres+=1
 
     if no_of_centres == 0:
         print("Sorry no centre available in at "+region+" dist_id " +str(dist_id)+" as on "+datetime.datetime.now().strftime("%d-%m-%y %H:%M:%S"))
     else:
-        playsound.playsound("alarm.mp3")
-
+        threading.Thread(target=playAlarm).start()
+threadLock = threading.Lock()
 districtCodes = [
     [294, 265],
     [395, 392, 393, 394],
@@ -83,4 +89,4 @@ while 1:
         else:
             print("API call failed status code "+str(response.status_code)+" error: \n"+str(response.content))
 
-    time.sleep(30)
+    time.sleep(10)
