@@ -28,7 +28,8 @@ def process_output(json_output, region, dist_id):
     if no_of_centres == 0:
         print("Sorry no centre available in at "+region+" dist_id " +str(dist_id)+" as on "+datetime.datetime.now().strftime("%d-%m-%y %H:%M:%S"))
     else:
-        threading.Thread(target=playAlarm).start()
+        if not threadLock.locked():
+            threading.Thread(target=playAlarm).start()
 threadLock = threading.Lock()
 districtCodes = [
     [294, 265],
