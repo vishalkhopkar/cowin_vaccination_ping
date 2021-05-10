@@ -90,4 +90,4 @@ while 1:
         else:
             print("API call failed status code "+str(response.status_code)+" error: \n"+str(response.content))
 
-    time.sleep(10)
+    time.sleep(3)
