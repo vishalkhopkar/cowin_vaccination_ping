@@ -11,7 +11,7 @@ def playAlarm():
     playsound.playsound("alarm.mp3")
     threadLock.release()
 
-def process_output(json_output, region, dist_id):
+def process_output(json_output, region, dist_id, dose_int):
     #output = json.loads(json_output)
     no_of_centres = 0
     output = json_output
@@ -20,7 +20,7 @@ def process_output(json_output, region, dist_id):
         sessions = centre["sessions"]
         for session in sessions:
             min_age = session["min_age_limit"]
-            avbl_cap = session["available_capacity"]
+            avbl_cap = session["available_capacity_dose"+str(dose_int)]
             if min_age == 18 and avbl_cap > 0:
                 print("SLOTS AVAILABLE AT "+centre["name"]+", "+str(centre["pincode"])+", district "+centre["district_name"]+" DATE "+session["date"]+"\n\n\n")
                 no_of_centres+=1
@@ -54,6 +54,15 @@ except:
 region = region_arr[reg_id - 1]
 print("Your region is "+region)
 dist_ids = districtCodes[reg_id - 1]
+
+dose_int = input("Enter 1 for 1st dose and 2 for 2nd dose.\n")
+try:
+    dose_int = int(dose_int)
+    if dose_int < 1 or dose_int > 2:
+        raise Exception("Invalid")
+except:
+    print("Invalid input exiting...")
+    exit()
 while 1:
     current_date = datetime.datetime.now()
     current_yr = current_date.year
@@ -71,13 +80,7 @@ while 1:
     for dist_id in dist_ids:
         api_call = "https://cdn-api.co-vin.in/api/v2/appointment/sessions/calendarByDistrict?district_id="+str(dist_id)+"&date="+total_date
         print(api_call)
-        '''
-        Host: cdn-api.co-vin.in
-        Accept: application/json
-        Content-Type: application/xml
-        Cache-Control: no-cache
-        Postman-Token: a71b35c2-ef94-6213-cfb2-28c879bd9710
-        '''
+
         headers_dict = {
             "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36"
 
@@ -86,8 +89,8 @@ while 1:
         #response = urllib.request.urlopen(api_call)
         #print(response)
         if response.status_code == 200:
-            process_output(response.json(), region, dist_id)
+            process_output(response.json(), region, dist_id, dose_int)
         else:
             print("API call failed status code "+str(response.status_code)+" error: \n"+str(response.content))
 
-    time.sleep(3)
+    time.sleep(10)
